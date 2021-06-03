@@ -1,0 +1,115 @@
+POST https://a5702122bfde.ngrok.io/send_writing
+content-type: application/json
+
+{
+    "cosmetic":"tetttttt",
+    "image":"testtimtgstring"
+}
+###
+POST https://708f875be224.ngrok.io/findId
+content-type: application/json
+
+{
+    "name":"name9",
+    "email":"test9@email.com"
+}
+###
+POST http://localhost:4000/search_writing
+content-type: application/json
+
+{
+    "title":"스킨"
+}
+###
+POST http://localhost:4000/search_cosmetic
+content-type: application/json
+
+{
+    "name":"sung"
+}
+
+###
+POST https://91e3db492378.ngrok.io/register
+content-type: application/json
+
+{
+    "id":"test9",
+    "password":"pw9",
+    "name":"name9",
+    "email":"test9@email.com"
+}
+
+###
+
+POST http://localhost:4000/login
+content-type: application/json
+
+{
+	"id": "test8",
+    "password" :"pw8"
+}
+
+###
+
+POST http://localhost:4000/dupCheck
+content-type: application/json
+
+{
+    "id":"test9"
+}
+
+###
+
+GET  https://847a194b5fdb.ngrok.io/374.jpg
+content-type: application/json
+
+{
+}
+
+###
+POST  http://localhost:4000/search_cosmetic
+content-type: application/json
+
+{
+    "name":"sung"
+}
+
+###
+POST http://localhost:4000/register
+content-type: application/json
+
+{
+    "id":"test8",
+    "password":"pw8",
+    "name":"name8",
+    "email":"test8@email.com"
+}
+
+###
+
+POST http://localhost:4000/login
+content-type: application/json
+
+{
+	"id": "test8",
+    "password" :"pw8"
+}
+
+###
+
+POST http://localhost:4000/dupCheck
+content-type: application/json
+
+{
+    "id":"test9"
+}
+
+###
+
+GET http://localhost:4000
+content-type: application/json
+
+{
+    # "id": "sm10@example.com",
+    # "password" :"pa"
+}
