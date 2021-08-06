@@ -1,6 +1,7 @@
 var connection = require('./connectDB');
 var fs = require('fs');
 var i = Math.random();
+
 //글 최초작성시
 exports.sendWriting = async function (req, res) {
   var date = new Date().toLocaleDateString();//날짜
@@ -25,8 +26,8 @@ exports.sendWriting = async function (req, res) {
 
   //디코드
   var imageBuffer = Buffer.from(image, 'base64');
-  var imagename = "/"+ hours + minutes + seconds +milliseconds+ ".jpg";
-  fs.writeFileSync("./imagefs"+imagename, imageBuffer, function (err) {
+  var imagename = "/" + hours + minutes + seconds + milliseconds + ".jpg";
+  fs.writeFileSync("./imagefs" + imagename, imageBuffer, function (err) {
     //... 
   });
   console.log("이미지 서버저장");
@@ -73,23 +74,23 @@ exports.editWriting = async function (req, res) {
   var etc = req.body.etc;
   var cosmeticNameDB = req.body.cosmeticNameDB;
 
-  if(image!=null){
+  if (image != null) {
     //디코드
-  var imageBuffer = Buffer.from(image, 'base64');
-  var imagename = "/"+ hours + minutes + seconds +milliseconds+ ".jpg";
-  fs.writeFileSync("./imagefs"+imagename, imageBuffer, function (err) {
-  });
-  console.log("이미지 널아님");
+    var imageBuffer = Buffer.from(image, 'base64');
+    var imagename = "/" + hours + minutes + seconds + milliseconds + ".jpg";
+    fs.writeFileSync("./imagefs" + imagename, imageBuffer, function (err) {
+    });
+    console.log("이미지 널아님");
     var sql = 'UPDATE writing SET cosmetic=?,photo=?,satisfy=?,content=?,ingredient=?,jopssal=?,dry=?,hwanongsung=?,good=?,trouble=?,etc=? where id = ? AND date=? AND cosmetic =?';
     var params = [cosmetic, imagename, satisfy, content
-      , ingredient, jopssal, dry, hwanongsung, good, trouble, etc,id, date,cosmeticNameDB];
-  }else {
+      , ingredient, jopssal, dry, hwanongsung, good, trouble, etc, id, date, cosmeticNameDB];
+  } else {
     console.log("이미지 널임");
     var sql = 'UPDATE writing SET cosmetic=?,satisfy=?,content=?,ingredient=?,jopssal=?,dry=?,hwanongsung=?,good=?,trouble=?,etc=? where id = ? AND date=? AND cosmetic =?';
     var params = [cosmetic, satisfy, content
-      , ingredient, jopssal, dry, hwanongsung, good, trouble, etc,id, date,cosmeticNameDB];
+      , ingredient, jopssal, dry, hwanongsung, good, trouble, etc, id, date, cosmeticNameDB];
   }
-  console.log(id,date,cosmetic);
+  console.log(id, date, cosmetic);
   connection.query(sql, params, function (error, results, fields) {
     if (error) {
       console.log(error);
@@ -98,10 +99,50 @@ exports.editWriting = async function (req, res) {
         "code": 200,
         "success": "success writing"
       });
-      
+    }
+  });
+}
+//글 삭제하기
+exports.deleteWriting = async function (req, res) {
+  var id = req.body.id;
+  var content = req.body.content;
+  var date = req.body.date;
+  var cosmeticNameDB = req.body.cosmeticNameDB;
+  var imageurl;
+
+  var sql1 = 'SELECT photo FROM writing where id = ? AND content=? AND date=? AND cosmetic =?';
+  var params = [id, content, date, cosmeticNameDB];
+  var sql2 = 'DELETE FROM writing where id = ? AND content=? AND date=? AND cosmetic =?';
+
+
+  connection.query(sql1, params, function (error, results, fields) {
+    if (error) {
+      console.log(error);
+    } else {
+      if (results.length > 0) {
+        imageurl = results;
+        fs.unlink("./imagefs" + imageurl, (err) => err ?
+          console.log(err) : console.log(`${filePath} 를 정상적으로 삭제했습니다`));
+        console.log(imageurl);
+      }
+    }
+  }
+  );
+  connection.query(sql2, params, function (error, results, fields) {
+    if (error) {
+      res.send({
+        "code": 100,
+        "success": "error"
+      });
+      console.log(error);
+    } else{
+      res.send({
+        "code": 200,
+        "success": "success writing"
+      });
+       console.log("삭제 성공")
     }
   }
   );
 
 }
-

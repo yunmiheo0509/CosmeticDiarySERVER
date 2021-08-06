@@ -1,6 +1,6 @@
+//connectDB.js파일에서 db정보 정의 및 연결.
 var connection = require('./connectDB');
 const bcrypt = require('bcrypt');
-const { Server } = require('node:http');
 const saltRounds = 10;
 
 //로그인 부분
@@ -44,18 +44,18 @@ exports.login = async function (req, res) {
     }
   });
 }
-
 //회원가입 부분
 exports.register = async function (req, res) {
-  const password = req.body.password;
+  //클라이언트에서 받은 req를 각 변수에 저장한다.
+  const password = req.body.password;//bcrypt를 이용해 암호화 
   const encryptedPassword = await bcrypt.hash(password, saltRounds);
   var id = req.body.id;
   var name = req.body.name;
   var email = req.body.email;
-
+//db 쿼리
   var sql = 'INSERT INTO members (id, password, name, email) VALUES(?, ?, ?, ?)';
   var params = [id, encryptedPassword, name, email];
-
+//db에 보낸 쿼리의 결과를 받아 클라이언트로 보내준다.
   connection.query(sql, params, function (error, results, fields) {
     if (error) {
       res.send({
@@ -74,7 +74,6 @@ exports.register = async function (req, res) {
   }
   );
 }
-
 //회원가입할때 중복체크
 exports.dupCheck = async function (req, res) {
   var id = req.body.id;
@@ -100,7 +99,6 @@ exports.dupCheck = async function (req, res) {
     }
   });
 }
-
 //아이디 찾기
 exports.findId = async function (req, res) {
 
@@ -134,7 +132,6 @@ exports.findId = async function (req, res) {
 
   });
 }
-
 //비밀번호 찾기
 exports.findPw = async function (req, res) {
   var id = req.body.id;
@@ -163,11 +160,11 @@ exports.findPw = async function (req, res) {
         "code": 206,
         "success": "회원정보 존재하지 않음"
       });
+      console.log("비밀번호 변경실패 회원정보없음")
       console.log(error);
     }
   });
 }
-
 //비밀번호 변경
 exports.changePw = async function (req, res) {
   var id = req.body.id;
@@ -187,3 +184,5 @@ exports.changePw = async function (req, res) {
     console.log("비밀번호 변경 완료 : ", id, password);
   });
 }
+
+const { Server } = require('node:http');

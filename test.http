@@ -1,24 +1,19 @@
-POST https://a5702122bfde.ngrok.io/send_writing
+POST http://localhost:4000/delete_writing
 content-type: application/json
 
 {
-    "cosmetic":"tetttttt",
-    "image":"testtimtgstring"
+    "id":"test8",
+    "content":"랴ㅕ여오",
+    "date":"2021-05-04",
+    "cosmeticNameDB":"나나나" 
 }
 ###
-POST https://708f875be224.ngrok.io/findId
-content-type: application/json
 
-{
-    "name":"name9",
-    "email":"test9@email.com"
-}
-###
 POST http://localhost:4000/search_writing
 content-type: application/json
 
 {
-    "title":"스킨"
+    "title":"lolo"
 }
 ###
 POST http://localhost:4000/search_cosmetic

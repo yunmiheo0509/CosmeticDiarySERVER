@@ -21,7 +21,37 @@ exports.search_profile = async function(req,res){
                 "allergy": results[0].allergy,
                 "alarm": results[0].alarm,
         })
-        console.log(results);
+   
         }
     });
 }
+
+//프로필 수정
+exports.edit_profile = async function (req, res) {
+    var id = req.body.id;
+    var name = req.body.name;
+    // var image = req.body.image;
+    var gender = req.body.gender;
+    var age = req.body.age;
+    var skintype = req.body.skintype;
+    var allergy = req.body.allergy;
+    console.log(id, name, gender, age, skintype, allergy);
+    
+    var sql = 'UPDATE members SET id=?,name=?,gender=?,age=?,skintype=?,allergy=? where id = ?';
+    var params = [id, name, gender, age, skintype, allergy, id];
+    connection.query(sql, params, function (error, results, fields) {
+        if (error) {
+            res.send({
+            "code":206,
+            "success":"faild"});
+            
+            console.log(error);
+        } else {
+            res.send({
+                "code": 200,
+                "success": "success writing"
+            });
+        }
+    });
+}
+
